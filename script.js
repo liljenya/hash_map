@@ -1,7 +1,7 @@
 class HashMap {
     constructor(loadFactor, capacity) {
-        this.loadFactor = 0.75;
-        this.capacity = 16;
+        this.loadFactor = loadFactor;
+        this.capacity = capacity;
         this.buckets = new Array(this.capacity);
     }
 
@@ -110,25 +110,69 @@ class HashMap {
         let allKeys = [];
 
         for (let i = 0; i < this.buckets.length; i++) {
-            if (bucket) {
-                for (let i = 0; i < this.buckets.length; i++) { }
+            let bucket = this.buckets[i];
+            if (bucket !== undefined) {
+                for (let j = 0; j < bucket.length; j++) {
+                    allKeys.push(bucket[j][0]);
+                }
             }
-
         }
+        return allKeys;
+    }
+
+    values() {
+        let allValues = [];
+
+        for (let i = 0; i < this.buckets.length; i++) {
+            let bucket = this.buckets[i];
+            if (bucket !== undefined) {
+                for (let j = 0; j < bucket.length; j++) {
+                    allValues.push(bucket[j][1]);
+                }
+            }
+        }
+        return allValues;
+    }
+
+    entries() {
+        let allPairs = [];
+
+        for (let i = 0; i < this.buckets.length; i++) {
+            let bucket = this.buckets[i];
+            if (bucket !== undefined) {
+                for (let j = 0; j < bucket.length; j++) {
+                    allPairs.push(bucket[j]);
+                }
+            }
+        }
+        return allPairs
     }
 }
 
-// const test = new HashMap();
-// test.set('apple', 'red');
-// test.set('banana', 'yellow');
-// test.set('carrot', 'orange');
-// test.set('dog', 'brown');
-// test.set('elephant', 'gray');
-// test.set('frog', 'green');
-// test.set('grape', 'purple');
-// test.set('hat', 'black');
-// test.set('ice cream', 'white');
-// test.set('jacket', 'blue');
-// test.set('kite', 'pink');
-// test.set('lion', 'golden');
+
+const test = new HashMap(0.75, 16);
+
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+
+console.log('get("apple") ->', test.get('apple'));       
+console.log('get("banana") ->', test.get('banana'));     
+console.log('has("carrot") ->', test.has('carrot'));     
+console.log('has("zebra") ->', test.has('zebra'));       
+
+console.log('keys() ->', test.keys());
+
+console.log('values() ->', test.values());
+
+console.log('entries() ->', test.entries());
+
+console.log('remove("banana") ->', test.remove('banana')); 
+console.log('has("banana") ->', test.has('banana'));       
+
+test.clear();
+console.log('після clear() keys() ->', test.keys()); 
+
 
