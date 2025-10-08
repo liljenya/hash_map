@@ -3,6 +3,7 @@ class HashMap {
         this.loadFactor = loadFactor;
         this.capacity = capacity;
         this.buckets = new Array(this.capacity);
+        this.size = 0;
     }
 
     hash(key) {
@@ -36,7 +37,7 @@ class HashMap {
         this.size++;
 
         if (this.size / this.capacity > this.loadFactor) {
-            this._resize();
+            this.resize();
         }
     }
 
@@ -91,6 +92,7 @@ class HashMap {
     }
 
     length() {
+        let index = this.hash(key) % this.capacity;
         let bucket = this.buckets[index];
         let count = 0;
 
@@ -147,6 +149,24 @@ class HashMap {
         }
         return allPairs
     }
+
+    resize() {
+    const oldBuckets = this.buckets;
+    this.capacity *= 2;
+
+    this.buckets = new Array(this.capacity);
+    this.size = 0; 
+
+    for (let i = 0; i < oldBuckets.length; i++) {
+        const bucket = oldBuckets[i];
+        if (bucket) {
+            for (let j = 0; j < bucket.length; j++) {
+                const [key, value] = bucket[j];
+                this.set(key, value);
+            }
+        }
+    }
+}
 }
 
 
@@ -158,10 +178,10 @@ test.set('carrot', 'orange');
 test.set('dog', 'brown');
 test.set('elephant', 'gray');
 
-console.log('get("apple") ->', test.get('apple'));       
-console.log('get("banana") ->', test.get('banana'));     
-console.log('has("carrot") ->', test.has('carrot'));     
-console.log('has("zebra") ->', test.has('zebra'));       
+console.log('get("apple") ->', test.get('apple'));
+console.log('get("banana") ->', test.get('banana'));
+console.log('has("carrot") ->', test.has('carrot'));
+console.log('has("zebra") ->', test.has('zebra'));
 
 console.log('keys() ->', test.keys());
 
@@ -169,10 +189,10 @@ console.log('values() ->', test.values());
 
 console.log('entries() ->', test.entries());
 
-console.log('remove("banana") ->', test.remove('banana')); 
-console.log('has("banana") ->', test.has('banana'));       
+console.log('remove("banana") ->', test.remove('banana'));
+console.log('has("banana") ->', test.has('banana'));
 
 test.clear();
-console.log('після clear() keys() ->', test.keys()); 
+console.log('після clear() keys() ->', test.keys());
 
 
